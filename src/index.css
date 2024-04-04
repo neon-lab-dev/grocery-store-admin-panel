@@ -2,17 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  @apply font-inter;
+}
+
+/* hide scrollbar */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* decrease the width and style of default scrollbar */
+.scrollbar-md::-webkit-scrollbar {
+  @apply w-2;
+}
+
+.scrollbar-md::-webkit-scrollbar-thumb {
+  @apply bg-accent-400;
+}
+
+
 
 
 .scrollbar-sm::-webkit-scrollbar {
-    background-color: #F3F4F6;
-    border-radius: 100px;
-    width: 6px;
+  background-color: #F3F4F6;
+  border-radius: 100px;
+  width: 6px;
 }
 
 .scrollbar-sm::-webkit-scrollbar-thumb {
-    background-color: #4B5563;
-    width: 30px;
-    height: 30px;
-    border-radius: 100px;
+  background-color: #4B5563;
+  width: 30px;
+  height: 30px;
+  border-radius: 100px;
 }
