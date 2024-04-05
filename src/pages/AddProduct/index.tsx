@@ -1,12 +1,16 @@
 import { useForm } from "react-hook-form"
+import AppFormErrorLine from "../../components/reusable/errors/AppFormErrorLine"
 import attachmentIcon from "../../assets/icons/attachment.svg"
 import crossIcon from "../../assets/icons/cross.svg"
-import AppFormErrorLine from "../../components/reusable/errors/AppFormErrorLine"
-
+import UploadProduct, { error } from "./UploadProduct"
 
 const AddProduct = () => {
 
-    const { register, formState: { errors }, handleSubmit } = useForm()
+    const { register, formState: { errors }, handleSubmit, watch } = useForm()
+
+    console.log(watch());
+
+
 
     const handleFormSubmit = () => {
         console.log("called");
@@ -14,26 +18,26 @@ const AddProduct = () => {
     }
     console.log(errors);
 
-    return <form onSubmit={handleSubmit(handleFormSubmit)} className=" gap-5 flex  items-center ">
+    return <form onSubmit={handleSubmit(handleFormSubmit)} className="flex-col lg:flex-row  gap-5 flex  items-center ">
 
         {/* basic information */}
         <div className="w-[558px]  ">
-            <div className="bg-white min-h-[657px] rounded-[20px] border border-[#F3F4F6]  p-6">
+            <div className="bg-white min-h-[657px] rounded-[20px] border border-accent-50  p-6">
 
                 <h3 className="font-inter font-semibold text-xl ">Basic Information</h3>
-                <p className="font-inter text-sm text-[#6B7280] mt-1">Lorem ipsum dolor sit abet consectetur. Tortor elit</p>
+                <p className="font-inter text-sm text-accent-500 mt-1">Lorem ipsum dolor sit abet consectetur. Tortor elit</p>
 
                 {/* product Name */}
                 <div className="mt-5 flex flex-col justify-center gap-[6px] ">
-                    <label className="font-inter font-medium text-[#6B7280] text-base" htmlFor="pname">Product Name*</label>
+                    <label className="font-inter font-medium text-accent-500 text-base" htmlFor="pname">Product Name*</label>
                     <input
                         {...register("productName",
                             {
                                 required: { value: true, message: "The Product name is required" },
                                 minLength: { value: 3, message: "The minimum length of the product is 3 characters" },
-                                maxLength: { value: 100, message: "The maximun length of the product is 100 characters" },
+                                maxLength: { value: 100, message: "The maximum length of the product is 100 characters" },
                             })}
-                        className="h-[58px] w-[510px] rounded-xl py-[18px] px-4 bg-[#F9FAFB] text-lg border-[#F3F4F6] border outline-none" type="text" placeholder="eg., Tomato" id="pname" />
+                        className="h-[58px] w-[510px] rounded-xl py-[18px] px-4 bg-background text-lg border-accent-100 border outline-none" type="text" placeholder="eg., Tomato" id="pname" />
                     {
                         errors.productName && <AppFormErrorLine message={errors.productName.message as String} />
                     }
@@ -41,14 +45,14 @@ const AddProduct = () => {
 
                 {/* Product desc */}
                 <div className="mt-5 flex flex-col justify-center gap-[6px] ">
-                    <label className="font-inter text-[#6B7280] font-medium text-base" htmlFor="productDesc">Product Description*</label>
+                    <label className="font-inter text-accent-500 font-medium text-base" htmlFor="productDesc">Product Description*</label>
                     <textarea
                         {...register("productDesc",
                             {
                                 required: { value: true, message: "The Product Desc is required" },
                                 minLength: { value: 5, message: "The minimum length of the product is 5 characters" }
                             })}
-                        className="h-[112px] w-[510px] rounded-xl py-[18px] px-4 bg-[#F9FAFB] text-lg border-[#F3F4F6] border outline-none resize-none" placeholder="Description goes here...." id="productDesc" />
+                        className="h-[112px] w-[510px] rounded-xl py-[18px] px-4 bg-background text-lg border-accent-100 border outline-none resize-none" placeholder="Description goes here...." id="productDesc" />
                     {
                         errors.productDesc && <AppFormErrorLine message={errors.productDesc.message as String} />
                     }
@@ -56,14 +60,14 @@ const AddProduct = () => {
 
 
                 <div className="mt-5 flex flex-col justify-center gap-[6px] ">
-                    <label className="font-inter font-medium text-[#6B7280] text-base" htmlFor="keyFeatures">Key Features*</label>
+                    <label className="font-inter font-medium text-accent-500 text-base" htmlFor="keyFeatures">Key Features*</label>
                     <textarea
                         {...register("keyFeatures",
                             {
                                 required: { value: true, message: "The keyFeatures is required" },
                                 minLength: { value: 5, message: "The minimum length of the keyFeatures is 5 characters" }
                             })}
-                        className="h-[112px] w-[510px] rounded-xl py-[18px] px-4 bg-[#F9FAFB] text-lg border-[#F3F4F6] border outline-none resize-none" placeholder="Key Features" id="keyFeatures" />
+                        className="h-[112px] w-[510px] rounded-xl py-[18px] px-4 bg-background text-lg border-accent-100 border outline-none resize-none" placeholder="Key Features" id="keyFeatures" />
                     {
                         errors.keyFeatures && <AppFormErrorLine message={errors.keyFeatures.message as String} />
                     }
@@ -71,13 +75,13 @@ const AddProduct = () => {
 
                 <div className="flex items-center justify-center gap-7">
                     <div className="mt-5 flex flex-col justify-center gap-[6px] ">
-                        <label className="font-inter font-medium text-[#6B7280] text-base" htmlFor="productWeight">Product Weight*</label>
+                        <label className="font-inter font-medium text-accent-500 text-base" htmlFor="productWeight">Product Weight*</label>
                         <input
                             {...register("productWeight",
                                 {
                                     required: { value: true, message: "The productWeight is required" }
                                 })}
-                            className="h-[58px] w-[242px] rounded-xl py-[18px] px-4 bg-[#F9FAFB] text-lg border-[#F3F4F6] border outline-none" type="text" placeholder="eg., 24kg" id="productWeight" />
+                            className="h-[58px] w-[242px] rounded-xl py-[18px] px-4 bg-background text-lg border-accent-100 border outline-none" type="text" placeholder="eg., 24kg" id="productWeight" />
                         {
                             errors.productWeight && <AppFormErrorLine message={errors.productWeight.message as String} />
                         }
@@ -90,7 +94,7 @@ const AddProduct = () => {
                                 {
                                     required: { value: true, message: "The productColor is required" }
                                 })}
-                            className="h-[58px] w-[242px] rounded-xl py-[18px] px-4 bg-[#F9FAFB] text-lg border-[#F3F4F6] border outline-none" type="text" placeholder="eg., 24kg" id="productColor" />
+                            className="h-[58px] w-[242px] rounded-xl py-[18px] px-4 bg-background text-lg border-accent-100 border outline-none" type="text" placeholder="eg., 24kg" id="productColor" />
                         {
                             errors.productColor && <AppFormErrorLine message={errors.productColor.message as String} />
                         }
@@ -100,33 +104,33 @@ const AddProduct = () => {
 
             {/* Inventory Management */}
 
-            <div className="mt-5  bg-white min-h-[202px]  rounded-[20px] border border-[#F3F4F6]  p-6">
+            <div className="mt-5  bg-white min-h-[202px]  rounded-[20px] border border-accent-100  p-6">
 
-                <h3 className="text-[20px] font-semibold font-inter text-[#374151]">Inventory Management</h3>
-                <p className="font-inter font-normal text-sm mt-[2px] text-[#6B7280]">Lorem ipsum dolor sit amet consectetur adipisicing.</p>
+                <h3 className="text-[20px] font-semibold font-inter text-accent-700">Inventory Management</h3>
+                <p className="font-inter font-normal text-sm mt-[2px] text-accent-500">Lorem ipsum dolor sit amet consectetur adipisicing.</p>
 
                 <div className="flex items-center justify-center gap-7">
                     <div className="mt-5 flex flex-col justify-center gap-[6px] ">
-                        <label className="font-inter font-medium text-base text-[#6B7280]" htmlFor="skuCode">SKU Code*</label>
+                        <label className="font-inter font-medium text-base text-accent-500" htmlFor="skuCode">SKU Code*</label>
                         <input
                             {...register("skuCode",
                                 {
                                     required: { value: true, message: "The skuCode is required" }
                                 })}
-                            className="h-[58px] w-[242px] rounded-xl py-[18px] px-4 bg-[#F9FAFB] text-lg border-[#F3F4F6] border outline-none" type="text" placeholder="eg., KG-293-001" id="skuCode" />
+                            className="h-[58px] w-[242px] rounded-xl py-[18px] px-4 bg-background text-lg border-accent-100 border outline-none" type="text" placeholder="eg., KG-293-001" id="skuCode" />
                         {
                             errors.skuCode && <AppFormErrorLine message={errors.skuCode.message as String} />
                         }
                     </div>
 
                     <div className="mt-5 flex flex-col justify-center gap-[6px] ">
-                        <label className="font-inter font-medium text-base text-[#6B7280]" htmlFor="stock">Stock*</label>
+                        <label className="font-inter font-medium text-base text-accent-500" htmlFor="stock">Stock*</label>
                         <input
                             {...register("stock",
                                 {
                                     required: { value: true, message: "The stock is required" }
                                 })}
-                            className="h-[58px] w-[242px] rounded-xl py-[18px] px-4 bg-[#F9FAFB] text-lg border-[#F3F4F6] border outline-none" type="text" placeholder="eg., 256" id="stock" />
+                            className="h-[58px] w-[242px] rounded-xl py-[18px] px-4 bg-background text-lg border-accent-100 border outline-none" type="text" placeholder="eg., 256" id="stock" />
                         {
                             errors.stock && <AppFormErrorLine message={errors.stock.message as String} />
                         }
@@ -138,78 +142,7 @@ const AddProduct = () => {
         </div>
 
         {/* Upload Product Images */}
-        <div className="w-[558px] ">
-            <div className="bg-white min-h-[466px] rounded-[20px] border border-[#F3F4F6]  p-6">
-                <h3 className="font-inter font-semibold text-xl ">Upload Product Images</h3>
-                <p className="font-inter text-sm text-[#6B7280] mt-1">Lorem ipsum dolor sit abet consectetur. Tortor elit</p>
-
-                <div className="h-[128px] mt-6 max-w-[510px] flex gap-3 flex-col justify-center items-center rounded-xl border-2 border-dashed border-[#D1D5DB]">
-                    <div className="text-center">
-                        <img className="h-10 w-40" src={attachmentIcon} alt="" />
-                    </div>
-                    <div className="">
-                        <h3 className="font-inter font-semibold text-xl ">Drag or Browse File</h3>
-                    </div>
-                </div>
-
-                {/* uploaded files */}
-                <div className="mt-3 text-[#6B7280] h-[193px]  max-w-[510px]">
-                    <h6 className="text-[#6B7280] text-sm font-inter">Uploaded files</h6>
-                    <div className=" container max-h-[164px] overflow-y-auto scrollbar-sm  mt-2 flex flex-col gap-2 justify-center ">
-                        <div className="flex justify-between bg-[#F9FAFB] max-w-[492px] rounded-xl py-5 px-6">
-                            <h6 className="font-inter font-medium text-sm">File_name_123.jpg</h6>
-                            <button>
-                                <img className="h-6 w-6" src={crossIcon} alt="" />
-                            </button>
-                        </div>
-                        <div className="flex justify-between bg-[#F9FAFB] max-w-[492px] rounded-xl py-5 px-6">
-                            <h6 className="font-inter font-medium text-sm">File_name_123.jpg</h6>
-                            <button>
-                                <img className="h-6 w-6" src={crossIcon} alt="" />
-                            </button>
-                        </div>
-
-
-                    </div>
-                </div>
-
-            </div>
-
-            <div className="bg-white mt-4 min-h-[311px]  rounded-[20px] border border-[#F3F4F6]  p-6">
-                <h3 className="font-inter font-semibold text-xl ">Category</h3>
-                <p className="font-inter text-sm text-[#6B7280] mt-1">Lorem ipsum dolor sit abet consectetur. Tortor elit</p>
-                <div className="mt-5 flex flex-col justify-center gap-[6px] ">
-                    <label className="font-inter font-medium text-base text-[#6B7280]" htmlFor="category">Select Category*</label>
-                    <input
-                        {...register("category",
-                            {
-                                required: { value: true, message: "The category is required" }
-                            })}
-                        className="h-[58px] max-w-[510px] rounded-xl py-[18px] px-4 bg-[#F9FAFB] text-lg border-[#F3F4F6] border outline-none" type="text" placeholder="eg., Category" id="category" />
-                    {
-                        errors.category && <AppFormErrorLine message={errors.category.message as String} />
-                    }
-                </div>
-                <div className="mt-5 flex flex-col justify-center gap-[6px] ">
-                    <label className="font-inter font-medium text-base text-[#6B7280]" htmlFor="category">Select Subcategory*</label>
-                    <input
-                        {...register("subCategory",
-                            {
-                                required: { value: true, message: "The subCategory is required" }
-                            })}
-                        className="h-[58px] max-w-[510px] rounded-xl py-[18px] px-4 bg-[#F9FAFB] text-lg border-[#F3F4F6] border outline-none" type="text" placeholder="eg., sub-category-1, sub-category-2, sub-category-3 " id="category" />
-                    {
-                        errors.subCategory && <AppFormErrorLine message={errors.subCategory.message as String} />
-                    }
-                </div>
-
-            </div>
-
-            <div className="text-end mt-3">
-                <button className="bg-[#F97316] text-white py-5 px-12 rounded-xl" >Add Product</button>
-            </div>
-
-        </div>
+        <UploadProduct errors={errors as error} register={register} />
 
 
     </form>
