@@ -23,11 +23,11 @@ const AddProduct = () => {
 
     }
 
-    return <form onSubmit={handleSubmit(handleFormSubmit)} className="flex-col w-full  xl:flex-row  gap-5 flex  items-center ">
+    return <form onSubmit={handleSubmit(handleFormSubmit)} className="flex-col max-w-[1500px] w-full  lg:flex-row  gap-5 flex  items-center ">
 
         {/* basic information */}
-        <div className="xl:w-[50%]">
-            <div className="bg-white w-[510px] xl:w-full min-h-[657px] rounded-[20px] border border-accent-50  p-6">
+        <div className="w-full">
+            <div className="bg-white w-full xl:w-full min-h-[657px] rounded-[20px] border border-accent-50  p-6">
 
                 <h3 className="font-inter font-semibold text-xl ">Basic Information</h3>
                 <p className="font-inter text-sm text-accent-500 mt-1">Lorem ipsum dolor sit abet consectetur. Tortor elit</p>
@@ -118,7 +118,7 @@ const AddProduct = () => {
                 <h3 className="text-[20px] font-semibold font-inter text-accent-700">Inventory Management</h3>
                 <p className="font-inter font-normal text-sm mt-[2px] text-accent-500">Lorem ipsum dolor sit amet consectetur adipisicing.</p>
 
-                <div className="flex flex-col xl:flex-row w-full items-center justify-center gap-7">
+                <div className="flex flex-col lg:flex-row w-full items-center justify-center gap-7">
 
                     <div className="mt-5 w-full flex flex-col justify-center gap-[6px] ">
                         <label className="font-inter font-medium text-base text-accent-500" htmlFor="skuCode">SKU Code*</label>
@@ -155,9 +155,8 @@ const AddProduct = () => {
         </div>
 
         {/* Upload Product Images */}
-        <div className="xl:w-[50%]">
+        <div className="w-full ">
             <UploadProduct
-
                 selectedImages={selectedImages}
                 setSelectedImages={setSelectedImages}
                 errors={errors as error}

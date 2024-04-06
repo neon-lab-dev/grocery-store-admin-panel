@@ -84,7 +84,7 @@ const UploadProduct: React.FC<UploadProduct> = ({ register, errors, selectedImag
     return (
         <div>
 
-            <div className="w-[558px] xl:w-full ">
+            <div className="w-full">
                 <div className="bg-white min-h-[466px] rounded-[20px] border border-accent-100  p-6">
                     <h3 className="font-inter font-semibold text-xl ">Upload Product Images</h3>
                     <p className="font-inter text-sm text-accent-500 mt-1">Lorem ipsum dolor sit abet consectetur. Tortor elit</p>
@@ -140,7 +140,7 @@ const UploadProduct: React.FC<UploadProduct> = ({ register, errors, selectedImag
 
                                             {
                                                 selectedImages.map(item => <div className="flex  
-                                                my-1 justify-between bg-accent-50 max-w-[492px] rounded-xl py-5 px-6">
+                                                my-1 justify-between bg-accent-50  rounded-xl py-5 px-6">
                                                     <h6 className="font-inter text-wrap  font-medium text-sm">
                                                         <a
                                                             className='hover:underline font-medium text-sm'
