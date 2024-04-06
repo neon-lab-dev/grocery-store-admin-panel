@@ -113,6 +113,7 @@ const UploadProduct: React.FC<UploadProduct> = ({ register, errors, selectedImag
                                 onChange={handleImageChange}
                                 ref={inputRef}
                                 className='hidden'
+                                accept='image/*'
                                 type="file"
                             />
                         </div>
