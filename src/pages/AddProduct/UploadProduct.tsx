@@ -1,8 +1,9 @@
-import React, { DragEvent, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import attachmentIcon from "../../assets/icons/attachment.svg"
 import crossIcon from "../../assets/icons/cross.svg"
 import checkIcon from "../../assets/icons/check.svg"
 import AppFormErrorLine from '../../components/reusable/errors/AppFormErrorLine'
+import Swal from 'sweetalert2'
 
 export type error = {
     category?: {
@@ -18,57 +19,92 @@ export type error = {
 
 interface UploadProduct {
     register: Function,
-    errors: error
+    errors: error,
+    setSelectedImages: Function,
+    selectedImages: File[]
 }
 
-const UploadProduct: React.FC<UploadProduct> = ({ register, errors }) => {
+const UploadProduct: React.FC<UploadProduct> = ({ register, errors, selectedImages, setSelectedImages }) => {
 
 
-    const [selectedImages, setSelectedImages] = useState<File[]>([])
-    const [isFileDropping, setIsFileDropping] = useState(false)
-    const inputRef = useRef<HTMLInputElement>(null)
+    const [isFileDropping, setIsFileDropping] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const handleOpenInput = () => {
         inputRef?.current?.click()
     }
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { files } = event.target
+        const { files } = event.target;
         if (files && files.length > 0) {
-            setSelectedImages([...selectedImages, ...files])
+            const fileList = files as FileList;
+            const duplicateFiles = Array.from(fileList).filter(file =>
+                selectedImages.some(selectedImage => selectedImage.name === file.name)
+            )
+
+            if (duplicateFiles.length > 0) {
+                // Display error message
+                Swal.fire({
+                    title: "Duplicate Image",
+                    text: "You have already selected this image. Please select a different one.",
+                    icon: "error"
+                });
+                event.target.value = ''
+            } else {
+                setSelectedImages([...selectedImages, ...Array.from(fileList)]);
+            }
         }
-    }
-    const handleDrop = (e: DragEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    };
+
+
+    const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
         setIsFileDropping(false);
-        const files = e.dataTransfer.files;
+        const files = event.dataTransfer.files;
         if (files.length === 0) return;
-        setSelectedImages([...selectedImages, ...files])
+        if (files && files.length > 0) {
+            const fileList = files as FileList;
+            const duplicateFiles = Array.from(fileList).filter(file =>
+                selectedImages.some(selectedImage => selectedImage.name === file.name)
+            );
+
+            if (duplicateFiles.length > 0) {
+                // Display error message
+                Swal.fire({
+                    title: "Duplicate Image",
+                    text: "You have already selected this image. Please select a different one.",
+                    icon: "error"
+                });
+            } else {
+                setSelectedImages([...selectedImages, ...Array.from(fileList)]);
+            }
+        }
     };
 
     return (
         <div>
 
-            <div className="max-w-[558px] min-w-[450px] ">
+            <div className="w-[558px] xl:w-full ">
                 <div className="bg-white min-h-[466px] rounded-[20px] border border-accent-100  p-6">
                     <h3 className="font-inter font-semibold text-xl ">Upload Product Images</h3>
                     <p className="font-inter text-sm text-accent-500 mt-1">Lorem ipsum dolor sit abet consectetur. Tortor elit</p>
 
                     {/* file input 👇  */}
-                    <div className={` h-[128px] mt-6 max-w-[510px] flex gap-3 flex-col justify-center items-center rounded-xl border-2 border-dashed border-accent-300 ${isFileDropping && "shadow-md"}`}>
+                    <div
+                        onDrop={handleDrop}
+                        onDragOver={(e) => {
+                            e.preventDefault();
+                            setIsFileDropping(true);
+                        }}
+                        onDragLeave={() => {
+                            setIsFileDropping(false);
+                        }}
+                        className={` h-[128px] mt-6 w-ull flex gap-3 flex-col justify-center items-center rounded-xl border-2 border-dashed border-accent-300 ${isFileDropping && "shadow-md border-primary-500 "}`}>
                         <div className="text-center">
                             <button
-                                onDrop={handleDrop}
-                                onDragOver={(e) => {
-                                    e.preventDefault();
-                                    setIsFileDropping(true);
-                                }}
-                                onDragLeave={() => {
-                                    setIsFileDropping(false);
-                                }}
                                 onClick={handleOpenInput}
                                 type='button'
-                                className={`h-10 w-40  rounded-md ${isFileDropping ? 'bg-gray-200 shadow-xl' : ''}`}
+                                className={`h-10 w-40  rounded-md `}
                             >
                                 <img className='w-full h-full' src={attachmentIcon} alt="" />
                             </button>
@@ -87,7 +123,7 @@ const UploadProduct: React.FC<UploadProduct> = ({ register, errors }) => {
                     <AppFormErrorLine message={errors?.productImages?.message as String} />
 
                     {/* uploaded files */}
-                    <div className="mt-3 text-accent-500 h-[193px]  max-w-[510px]">
+                    <div className="mt-3 text-accent-500 h-[193px] w-full">
                         {
                             selectedImages.length === 0 ? <>
                                 <div className="h-full w-full flex justify-center items-center ">
@@ -112,7 +148,7 @@ const UploadProduct: React.FC<UploadProduct> = ({ register, errors }) => {
                                                             {item.name}
                                                         </a>
                                                     </h6>
-                                                    <button type='button' onClick={e => setSelectedImages(selectedImages.filter(f => f.name !== item.name))} className='h-6 w-6'>
+                                                    <button type='button' onClick={() => setSelectedImages(selectedImages.filter(f => f.name !== item.name))} className='h-6 w-6'>
                                                         <img className="h-full w-full" src={crossIcon} alt="" />
                                                     </button>
                                                 </div>)
@@ -137,7 +173,7 @@ const UploadProduct: React.FC<UploadProduct> = ({ register, errors }) => {
                                 {
                                     required: { value: true, message: "The category is required" }
                                 })}
-                            className="h-[58px] max-w-[510px] rounded-xl py-[18px] px-4 bg-accent-50 text-lg border-accent-100 border outline-none" type="text" placeholder="eg., Category" id="category" />
+                            className="h-[58px] w-full rounded-xl py-[18px] px-4 bg-accent-50 text-lg border-accent-100 border outline-none" type="text" placeholder="eg., Category" id="category" />
                         {
                             errors.category && <AppFormErrorLine message={errors.category.message as String} />
                         }
@@ -149,7 +185,7 @@ const UploadProduct: React.FC<UploadProduct> = ({ register, errors }) => {
                                 {
                                     required: { value: true, message: "The subCategory is required" }
                                 })}
-                            className="h-[58px] max-w-[510px] rounded-xl py-[18px] px-4 bg-accent-50 text-lg border-accent-100 border outline-none" type="text" placeholder="eg., sub-category-1, sub-category-2, sub-category-3 " id="category" />
+                            className="h-[58px] w-full rounded-xl py-[18px] px-4 bg-accent-50 text-lg border-accent-100 border outline-none" type="text" placeholder="eg., sub-category-1, sub-category-2, sub-category-3 " id="category" />
                         {
                             errors.subCategory && <AppFormErrorLine message={errors.subCategory.message as String} />
                         }
