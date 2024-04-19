@@ -1,9 +1,13 @@
 import React, { useRef, useState } from 'react'
 import attachmentIcon from "../../assets/icons/attachment.svg"
 import crossIcon from "../../assets/icons/cross.svg"
-import checkIcon from "../../assets/icons/check.svg"
+import caretDownSvg from "../../assets/icons/caret-down.svg"
+import caretUpSvg from "../../assets/icons/caret-up.svg"
+import addCircleOrangeSvg from "../../assets/icons/add-circle-orange.svg"
 import AppFormErrorLine from '../../components/reusable/errors/AppFormErrorLine'
 import Swal from 'sweetalert2'
+import AddCategory from './AddCategory'
+import AddSubCategory from './AddSubCategory'
 
 export type error = {
     category?: {
@@ -28,6 +32,8 @@ const UploadProduct: React.FC<UploadProduct> = ({ register, errors, selectedImag
 
 
     const [isFileDropping, setIsFileDropping] = useState(false);
+    const [categoryDropdown, setCategoryDropdown] = useState(false)
+    const [subcategoryDropdown, setSubcategoryDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleOpenInput = () => {
@@ -80,6 +86,22 @@ const UploadProduct: React.FC<UploadProduct> = ({ register, errors, selectedImag
             }
         }
     };
+
+
+    const category = [
+        "Fruit & Vegetables",
+        "Frozen Food",
+        "Chips & Namkin ",
+        "Juice & Beverages",
+    ]
+
+    const subCategories = [
+        "Fresh Fruits",
+        "Fresh Vegetables",
+        "Coriander & Others",
+        "Seasonal",
+        "Certified Organics",
+    ]
 
     return (
         <div>
@@ -167,42 +189,98 @@ const UploadProduct: React.FC<UploadProduct> = ({ register, errors, selectedImag
                 <div className="bg-white mt-4 min-h-[311px]  rounded-[20px] border border-accent-100  p-6">
                     <h3 className="font-inter font-semibold text-xl ">Category</h3>
                     <p className="font-inter text-sm text-accent-500 mt-1">Lorem ipsum dolor sit abet consectetur. Tortor elit</p>
-                    <div className="mt-5 flex flex-col justify-center gap-[6px] ">
+
+                    {/* category */}
+                    <div className="z-50 mt-5 flex flex-col justify-center gap-[6px] ">
                         <label className="font-inter font-medium text-base text-accent-500" htmlFor="category">Select Category*</label>
-                        <input
-                            {...register("category",
-                                {
-                                    required: { value: true, message: "The category is required" }
-                                })}
-                            className="h-[58px] w-full rounded-xl py-[18px] px-4 bg-accent-50 text-lg border-accent-100 border outline-none" type="text" placeholder="eg., Category" id="category" />
+                        <div className="min-w-[259px]  max-w-full relative">
+                            <div onClick={() => setCategoryDropdown((prev) => !prev)} role="button" className={`h-[55px]
+                              bg-accent-50 py-[18px] px-4  border border-accent-100
+                               rounded-xl ${categoryDropdown && "rounded-b-none"}  w-full flex justify-between `}>
+                                <span className='font-medium text-base text-accent-600'>Select Category</span>
+                                <span><img src={categoryDropdown ? caretUpSvg : caretDownSvg} alt="" /></span>
+                            </div>
+                            {
+                                categoryDropdown &&
+                                <div role='button' className="w-full z-50 bg-accent-100 shadow-md  rounded-xl  rounded-t-none absolute">
+                                    <div className="overflow-y-auto max-h-[242px] scrollbar-md">
+                                        {
+                                            category.map(item => <label htmlFor={item} role='button' className="flex justify-between items-center  w-full p-4  border-t border-accent-200">
+                                                <div className='text-sm cursor-pointer flex-1 font-medium text-accent-600 font-inter'>{item}</div>
+                                                <input value={item} className='radio radio-xs radio-error' type="radio" name={"category"} id={item} />
+                                            </label>)
+                                        }
+                                    </div>
+                                    <button onClick={() => {
+                                        if (document) {
+                                            (document.getElementById('addCategoryModal') as HTMLFormElement).showModal();
+                                        }
+                                    }} type='button' className="px-4  bg-primary-200 flex justify-center gap-2 items-center py-6 w-full border-t border-accent-200">
+                                        <span className='text-base font-semibold text-primary-500'>Add new Category</span>
+                                        <img src={addCircleOrangeSvg} alt="" />
+                                    </button>
+                                </div>
+                            }
+                        </div>
+
                         {
                             errors.category && <AppFormErrorLine message={errors.category.message as String} />
                         }
                     </div>
+
+                    {/* sub category */}
                     <div className="mt-5 flex flex-col justify-center gap-[6px] ">
-                        <label className="font-inter font-medium text-base text-accent-500" htmlFor="category">Select Subcategory*</label>
-                        <input
-                            {...register("subCategory",
-                                {
-                                    required: { value: true, message: "The subCategory is required" }
-                                })}
-                            className="h-[58px] w-full rounded-xl py-[18px] px-4 bg-accent-50 text-lg border-accent-100 border outline-none" type="text" placeholder="eg., sub-category-1, sub-category-2, sub-category-3 " id="category" />
+                        <label className="font-inter font-medium text-base text-accent-500" htmlFor="category">Select Category*</label>
+                        <div className="min-w-[259px]  max-w-full relative">
+                            <div onClick={() => setSubcategoryDropdown((prev) => !prev)} role="button" className={`h-[55px]
+                              bg-accent-50 py-[18px] px-4  border border-accent-100 z-0
+                               rounded-xl ${subcategoryDropdown && "rounded-b-none"}  w-full flex justify-between `}>
+                                <span className='font-medium text-base text-accent-600'>Select Subcategory</span>
+                                <span><img src={subcategoryDropdown ? caretUpSvg : caretDownSvg} alt="" /></span>
+                            </div>
+                            {
+                                subcategoryDropdown &&
+                                <div role='button' className="w-full bg-accent-100 shadow-md overflow-y-auto rounded-xl rounded-t-none absolute">
+                                    <div className="overflow-y-auto max-h-[242px] scrollbar-md">
+                                        {
+                                            subCategories.map(item => <label htmlFor={item} role='button' className="flex justify-between items-center  w-full p-4  border-t border-accent-200">
+                                                <div className='text-sm cursor-pointer flex-1 font-medium text-accent-600 font-inter'>{item}</div>
+                                                <input value={item} className='checkbox checkbox-xs  checkbox-warning rounded-md' type="checkbox" name={"category"} id={item} />
+                                            </label>)
+                                        }
+                                    </div>
+                                    <div className="px-4  bg-primary-200 flex jsu py-6 w-full border-t border-accent-200">
+                                        <button onClick={() => {
+                                            if (document) {
+                                                (document.getElementById('addSubCategoryModal') as HTMLFormElement).showModal();
+                                            }
+                                        }} type='button' className='flex justify-center items-center gap-2 w-full'>
+                                            <span className='text-base font-semibold text-primary-500'>Add new Subcategory</span>
+                                            <img src={addCircleOrangeSvg} alt="" />
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+
                         {
-                            errors.subCategory && <AppFormErrorLine message={errors.subCategory.message as String} />
+                            errors.category && <AppFormErrorLine message={errors.category.message as String} />
                         }
                     </div>
 
+
                 </div>
 
-                <div className="flex justify-end items-center mt-6">
-                    <button className="bg-primary-500 text-white py-4 px-10 rounded-xl flex justify-center items-center gap-1" >Add Product
-                        <img className='h-4' src={checkIcon} alt="" />
-                    </button>
-                </div>
 
             </div>
+
+            <AddCategory />
+            <AddSubCategory />
+
         </div>
     )
 }
+
 
 export default UploadProduct

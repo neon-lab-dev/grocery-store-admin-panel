@@ -26,6 +26,7 @@ export default {
         },
         primary: {
           500: "#F97316",
+          200: "#FED7AA",
         },
       },
     },
