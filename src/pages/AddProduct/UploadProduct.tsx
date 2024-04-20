@@ -28,7 +28,7 @@ interface UploadProduct {
     selectedImages: File[]
 }
 
-const UploadProduct: React.FC<UploadProduct> = ({ register, errors, selectedImages, setSelectedImages }) => {
+const UploadProduct: React.FC<UploadProduct> = ({ errors, selectedImages, setSelectedImages }) => {
 
 
     const [isFileDropping, setIsFileDropping] = useState(false);
