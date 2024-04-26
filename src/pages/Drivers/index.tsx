@@ -55,7 +55,6 @@ const Drivers = () => {
                                     <Button onClick={() => {
                                         if (document) {
                                             (document.getElementById('addDriverModal') as HTMLFormElement).showModal();
-
                                         }
                                     }} variant="primary" className="flex justify-center items-center gap-2">
                                         <span className="text-base font-medium">Add Driver</span>

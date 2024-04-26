@@ -5,6 +5,7 @@ import blockIcon from "../../assets/icons/block-icon.svg"
 import checkIcon from "../../assets/icons/checked.svg"
 import { drivers } from "../../assets/mockData/driverData"
 import Button from "../../components/reusable/Button"
+import UpdateDriver from "./UpdateDriver"
 
 interface driverDetail {
     driverId: String
@@ -12,7 +13,8 @@ interface driverDetail {
 
 const DriverDetail: React.FC<driverDetail> = ({ driverId }) => {
 
-    const filteredDriver = drivers.find(item => item.id === driverId)
+    const filteredDriver = drivers.find(item => item.id === driverId);
+
     return (
         <div>
             <dialog id="my_modal_3" className="modal">
@@ -72,7 +74,13 @@ const DriverDetail: React.FC<driverDetail> = ({ driverId }) => {
                                     <span className="text-base text-error-300">Remove Driver</span>
                                     <img className="h-4 w-4" src={blockIcon} alt="" />
                                 </Button>
-                                <Button variant="primary" className="px-12 py-4 gap-2 flex justify-center  items-center">
+                                <Button
+                                    onClick={() => {
+                                        if (document) {
+                                            (document.getElementById('updateDriverModal') as HTMLFormElement).showModal();
+                                        }
+                                    }}
+                                    variant="primary" className="px-12 py-4 gap-2 flex justify-center  items-center">
                                     <span className="text-base">Edit Driver</span>
                                     <img className="h-4 w-4" src={checkIcon} alt="" />
                                 </Button>
@@ -80,13 +88,10 @@ const DriverDetail: React.FC<driverDetail> = ({ driverId }) => {
                             </div>
                         </div>
 
-
-
-
                     </form>
                 </div>
             </dialog >
-
+            <UpdateDriver driverId={driverId} />
         </div >
     )
 }

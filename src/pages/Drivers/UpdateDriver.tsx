@@ -1,25 +1,22 @@
-import { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import crossSvg from "../../assets/icons/cross-black.svg"
 import uploadIcon from "../../assets/icons/upload-black.svg"
 import Button from "../../components/reusable/Button";
 import checkIcon from "../../assets/icons/checked.svg"
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import AppFormErrorLine from "../../components/reusable/AppFormErrorLine";
+import { drivers } from "../../assets/mockData/driverData";
 
-export interface FieldVal {
-    fullName: string;
-    mobile: string;
-    address: string;
-    vehicleModel: string;
-    vehicleNo: string;
-    // Add more fields as needed
+
+
+interface driverIdInterFace {
+    driverId?: String
 }
 
-
-const AddDriver = () => {
+const AddDriver: React.FC<driverIdInterFace> = ({ driverId }) => {
 
     const inputRef = useRef<HTMLInputElement>(null);
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm()
 
 
 
@@ -27,15 +24,27 @@ const AddDriver = () => {
         console.log(data);
     };
 
+    const filteredDriver = drivers.find(item => item.id === driverId)
+    useEffect(() => {
+        if (filteredDriver) {
+            for (const item of Object.keys(filteredDriver)) {
+                if (typeof filteredDriver[item as keyof typeof filteredDriver] === 'string') {
+                    setValue(item, filteredDriver[item])
+                }
+            }
+        }
+    }, [driverId, filteredDriver])
+
+
     return (
         <div>
-            <dialog id="addDriverModal" className="modal">
+            <dialog id="updateDriverModal" className="modal">
 
                 <div className="modal-box p-8 min-w-[752px] scrollbar-md">
                     <form method="dialog" className="flex flex-col gap-6 justify-center w-full">
                         <div className="flex justify-between items-center">
                             <div className="">
-                                <h1 className="font-medium text-[28px] text-accent-700">Add Driver</h1>
+                                <h1 className="font-medium text-[28px] text-accent-700">Update Driver</h1>
                                 <p className="text-sm font-normal text-accent-500 ">Lorem ipsum dolor sit amet consectetur. Tortor elit </p>
                             </div>
                             <button type="submit">
@@ -123,7 +132,7 @@ const AddDriver = () => {
 
                         <div className="flex justify-end ">
                             <Button type="submit" className="flex justify-center items-center gap-2 px-6 py-4">
-                                <span>Add</span>
+                                <span>Update</span>
                                 <img src={checkIcon} alt="" />
                             </Button>
                         </div>
@@ -131,7 +140,6 @@ const AddDriver = () => {
 
                 </div>
             </dialog >
-
 
         </div >
     )
